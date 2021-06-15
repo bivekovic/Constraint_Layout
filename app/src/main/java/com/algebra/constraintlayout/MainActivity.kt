@@ -39,16 +39,25 @@ class MainActivity : AppCompatActivity( ) {
     fun setupListeners( ) {
         bOdustani.setOnClickListener { }
         bSpremi.setOnClickListener {
-            val unesenoIme = etIme.text.toString( );
-            val unesenoPrezime = etPrezime.text.toString( );
-            var spol = ""
-            if( radioM.isChecked ) spol="M"
-            else if( radioZ.isChecked ) spol = "Z"
-            else if( radioNZR.isChecked ) spol = "/"
-            var mail = etMail.text.toString( )
-            var korisnik = Korisnik( unesenoIme, unesenoPrezime, mail, spol )
-            Toast.makeText( this, korisnik.toString( ), Toast.LENGTH_LONG ).show( )
+            val korisnik = procitajPodatke( )
+            if( korisnik.validiraj( ) )
+                Toast.makeText( this, korisnik.toString( ), Toast.LENGTH_LONG ).show( )
+            else
+                Toast.makeText( this, "Pogreška...", Toast.LENGTH_LONG ).show( )
+
+
         }
+    }
+
+    fun procitajPodatke( ) : Korisnik {
+        val unesenoIme = etIme.text.toString( );
+        val unesenoPrezime = etPrezime.text.toString( );
+        var spol = ""
+        if( radioM.isChecked ) spol="M"
+        else if( radioZ.isChecked ) spol = "Z"
+        else if( radioNZR.isChecked ) spol = "/"
+        var mail = etMail.text.toString( )
+        return Korisnik( unesenoIme, unesenoPrezime, mail, spol )
     }
 
     fun initWidgets( ) {
@@ -62,12 +71,24 @@ class MainActivity : AppCompatActivity( ) {
         bOdustani  = findViewById( R.id.bOdustani )
         bSpremi    = findViewById( R.id.bSpremi )
     }
+}
 
-    fun isValidEmail( mail:String ): Boolean {
+class Korisnik( var ime:String, var prezime:String, var mail:String, var spol: String ) {
+
+    fun isValidEmail( ): Boolean {
         val email_pattern = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$"
         val pattern = Pattern.compile(email_pattern)
         return pattern.matcher( mail ).matches()
     }
-}
 
-data class Korisnik( var ime:String, var prezime:String, var mail:String, var spol: String )
+    fun validiraj( ) : Boolean {
+        return  ( ime!=null && ime!="" ) &&
+                ( prezime!=null && prezime!="" ) &&
+                ( spol!=null && spol!="" ) &&
+                isValidEmail( )
+    }
+
+    override fun toString(): String {
+        return "IME: $ime\nPREZIME: $prezime\nE-MAIL: $mail\nSPOL: $spol"
+    }
+}
