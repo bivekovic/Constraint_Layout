@@ -43,9 +43,7 @@ class MainActivity : AppCompatActivity( ) {
             if( korisnik.validiraj( ) )
                 Toast.makeText( this, korisnik.toString( ), Toast.LENGTH_LONG ).show( )
             else
-                Toast.makeText( this, "Pogreška...", Toast.LENGTH_LONG ).show( )
-
-
+                Toast.makeText( this, korisnik.pogreske( ), Toast.LENGTH_LONG ).show( )
         }
     }
 
@@ -86,6 +84,16 @@ class Korisnik( var ime:String, var prezime:String, var mail:String, var spol: S
                 ( prezime!=null && prezime!="" ) &&
                 ( spol!=null && spol!="" ) &&
                 isValidEmail( )
+    }
+
+    fun pogreske( ) : String {
+        var poruka = ""
+        if( ime==null || ime=="" ) poruka += "Niste unijeli ime.\n"
+        if( prezime==null || prezime=="" ) poruka += "Niste unijeli prezime.\n"
+        if( spol==null || spol=="" ) poruka += "Niste odabrali spol.\n"
+        if( mail==null || mail=="" ) poruka += "Niste unijeli e-mail.\n"
+        else if( !isValidEmail() ) poruka += "Uneseni e-mail nije validan\n"
+        return poruka
     }
 
     override fun toString(): String {
