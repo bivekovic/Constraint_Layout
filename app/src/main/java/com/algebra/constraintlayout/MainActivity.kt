@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity( ) {
     private lateinit var bOdustani : Button
     private lateinit var bSpremi : Button
 
-    // jos nesto
-
 
 
     override fun onCreate( savedInstanceState: Bundle? ) {
